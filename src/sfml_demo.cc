@@ -17,11 +17,16 @@
  * MA 02110-1301, USA.
  */
 
+#include <memory>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
+
 class DemoApp
 {
 public:
 	DemoApp( int argc, char **argv );
-	~DemoApp();
+	~DemoApp() = default;
 
 	DemoApp( DemoApp & ) = delete;
 	DemoApp( DemoApp && ) = delete;
@@ -29,14 +34,32 @@ public:
 	DemoApp &operator=( DemoApp && ) = delete;
 
 	int run();
+
+private:
+	std::unique_ptr<sf::RenderWindow> window;
 };
 
-DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ ) {}
-
-DemoApp::~DemoApp() {}
+DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
+{
+	window = std::make_unique<sf::RenderWindow>( sf::VideoMode( 640, 480 ), "Hello from SFML" );
+}
 
 int DemoApp::run()
 {
+	while( window->isOpen() ) {
+
+		auto event = sf::Event{};
+
+		while( window->pollEvent( event ) ) {
+			if( event.type == sf::Event::Closed )
+				window->close();
+		}
+
+		glClearColor( 0.0F, 0.0F, 0.6F, 0.0F );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		window->display();
+	}
 
 	return 0;
 }

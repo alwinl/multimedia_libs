@@ -20,3 +20,15 @@
 add_executable( allegro_demo allegro_demo.cc )
 add_executable( sdl_demo sdl_demo.cc )
 add_executable( sfml_demo sfml_demo.cc )
+
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ALLEGRO REQUIRED allegro-5)
+pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SFML REQUIRED sfml-all)
+
+target_link_libraries(allegro_demo PRIVATE ${ALLEGRO_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries( sdl_demo PRIVATE ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries( sfml_demo PRIVATE ${SFML_LIBRARIES} ${OPENGL_LIBRARIES})
