@@ -16,3 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 #
+
+add_executable( allegro_demo allegro_demo.cc )
+add_executable( sdl_demo sdl_demo.cc )
+add_executable( sfml_demo sfml_demo.cc )
