@@ -21,9 +21,9 @@
 #include <vector>
 #include <array>
 
+#define GL_GLEXT_PROTOTYPES
 #include <SDL2/SDL.h>
-
-#include <GL/glew.h>
+#include <SDL2/SDL_opengl.h>
 
 #include "load_shaders.h"
 
@@ -64,9 +64,6 @@ DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 	window = SDL_CreateWindow( "Hello from SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
 							   windowFlags );
 	renderer = SDL_CreateRenderer( window, -1, rendererFlags );
-
-	if( glewInit() != GLEW_OK )
-		throw std::runtime_error( "Cannot load GLEW" );
 }
 
 DemoApp::~DemoApp()

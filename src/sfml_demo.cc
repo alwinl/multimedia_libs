@@ -22,9 +22,9 @@
 #include <vector>
 #include <array>
 
+#define GL_GLEXT_PROTOTYPES
 #include <SFML/Graphics.hpp>
-
-#include <GL/glew.h>
+#include <SFML/OpenGL.hpp>
 
 #include "load_shaders.h"
 
@@ -53,9 +53,6 @@ private:
 DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 {
 	window = std::make_unique<sf::RenderWindow>( sf::VideoMode( 640, 480 ), "Hello from SFML" );
-
-	if( glewInit() != GLEW_OK )
-		throw std::runtime_error( "Cannot load GLEW" );
 }
 
 int DemoApp::run()
