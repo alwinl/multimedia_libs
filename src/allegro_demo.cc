@@ -21,10 +21,8 @@
 #include <vector>
 #include <array>
 
-#define GL_GLEXT_PROTOTYPES
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_opengl.h>
-#include <GL/glext.h>
+#include <GL/glew.h>
 
 #include "load_shaders.h"
 
@@ -65,6 +63,9 @@ DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 	queue = al_create_event_queue();
 
 	al_register_event_source( queue, al_get_display_event_source( window ) );
+
+	if( glewInit() != GLEW_OK )
+		throw std::runtime_error( "Cannot load GLEW" );
 }
 
 DemoApp::~DemoApp()
