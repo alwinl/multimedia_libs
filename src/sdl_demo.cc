@@ -50,7 +50,7 @@ private:
 
 DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 {
-	const int windowFlags = SDL_WINDOW_OPENGL;
+	const int windowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 	const int width = 640;
 	const int height = 480;
 
@@ -85,8 +85,17 @@ int DemoApp::run()
 		SDL_Event event;
 
 		while( SDL_PollEvent( &event ) != 0 ) {
-			if( event.type == SDL_QUIT )
-				running = false;
+			switch( event.type ) {
+			case SDL_QUIT: running = false; break;
+			case SDL_KEYDOWN:
+				if( event.key.keysym.sym == SDLK_ESCAPE )
+					running = false;
+				break;
+			case SDL_WINDOWEVENT:
+				if( event.window.event == SDL_WINDOWEVENT_RESIZED )
+					glViewport( 0, 0, event.window.data1, event.window.data2 );
+				break;
+			}
 		}
 
 		glClearColor( 0.0F, 0.0F, 0.6F, 0.0F );

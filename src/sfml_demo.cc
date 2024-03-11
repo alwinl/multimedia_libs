@@ -66,8 +66,14 @@ int DemoApp::run()
 		auto event = sf::Event{};
 
 		while( window->pollEvent( event ) ) {
-			if( event.type == sf::Event::Closed )
-				window->close();
+			switch( event.type ) {
+			case sf::Event::Closed: window->close(); break;
+			case sf::Event::KeyPressed:
+				if( event.key.code == sf::Keyboard::Escape )
+					window->close();
+				break;
+			case sf::Event::Resized: glViewport( 0, 0, event.size.width, event.size.height ); break;
+			}
 		}
 
 		glClearColor( 0.0F, 0.0F, 0.6F, 0.0F );

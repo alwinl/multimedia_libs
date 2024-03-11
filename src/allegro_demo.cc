@@ -52,8 +52,9 @@ private:
 DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 {
 	al_install_system( ALLEGRO_VERSION_INT, atexit );
+	al_install_keyboard();
 
-	al_set_new_display_flags( ALLEGRO_WINDOWED | ALLEGRO_OPENGL | ALLEGRO_OPENGL_3_0 );
+	al_set_new_display_flags( ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_OPENGL | ALLEGRO_OPENGL_3_0 );
 	al_set_new_window_title( "Hello from Allegro" );
 
 	/* trunk-ignore(clang-tidy/cppcoreguidelines-prefer-member-initializer) */
@@ -63,6 +64,7 @@ DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 	queue = al_create_event_queue();
 
 	al_register_event_source( queue, al_get_display_event_source( window ) );
+	al_register_event_source( queue, al_get_keyboard_event_source() );
 
 	if( glewInit() != GLEW_OK )
 		throw std::runtime_error( "Cannot load GLEW" );
@@ -71,6 +73,7 @@ DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 DemoApp::~DemoApp()
 {
 	al_destroy_display( window );
+	al_destroy_event_queue( queue );
 
 	al_uninstall_system();
 }
@@ -86,8 +89,15 @@ int DemoApp::run()
 		ALLEGRO_EVENT event;
 
 		while( al_get_next_event( queue, &event ) ) {
-			if( event.type == ALLEGRO_EVENT_DISPLAY_CLOSE )
-				running = false;
+			switch( event.type ) {
+			case ALLEGRO_EVENT_DISPLAY_CLOSE: running = false; break;
+			case ALLEGRO_EVENT_KEY_DOWN:
+				switch( event.keyboard.keycode ) {
+				case ALLEGRO_KEY_ESCAPE: running = false; break;
+				}
+				break;
+			case ALLEGRO_EVENT_DISPLAY_RESIZE: glViewport( 0, 0, event.display.width, event.display.height ); break;
+			}
 		}
 
 		glClearColor( 0.0F, 0.0F, 0.6F, 0.0F );
