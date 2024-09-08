@@ -89,14 +89,20 @@ int DemoApp::run()
 		ALLEGRO_EVENT event;
 
 		while( al_get_next_event( queue, &event ) ) {
+
 			switch( event.type ) {
 			case ALLEGRO_EVENT_DISPLAY_CLOSE: running = false; break;
+
 			case ALLEGRO_EVENT_KEY_DOWN:
 				switch( event.keyboard.keycode ) {
 				case ALLEGRO_KEY_ESCAPE: running = false; break;
 				}
 				break;
-			case ALLEGRO_EVENT_DISPLAY_RESIZE: glViewport( 0, 0, event.display.width, event.display.height ); break;
+
+			case ALLEGRO_EVENT_DISPLAY_RESIZE:
+				glViewport( 0, 0, event.display.width, event.display.height );
+				al_acknowledge_resize( window );
+				break;
 			}
 		}
 
