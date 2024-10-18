@@ -1,5 +1,5 @@
 /*
- * load_shaders.h Copyright 2024 Alwin Leerling dna.leerling@gmail.com
+ * scene.h Copyright 2024 Alwin Leerling dna.leerling@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,13 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+class DemoScene
+{
+public:
+	void make_scene();
+	void render_scene( int width, int height ) const;
 
-#include <string>
-
-unsigned int load_program( std::string path );
+private:
+	unsigned int vao;
+	unsigned int program_id;
+};
