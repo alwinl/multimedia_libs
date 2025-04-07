@@ -17,9 +17,9 @@
 # MA 02110-1301, USA.
 #
 
-add_executable( allegro_demo allegro_demo.cc scene.cc )
-add_executable( sdl_demo sdl_demo.cc scene.cc )
-add_executable( sfml_demo sfml_demo.cc scene.cc )
+add_executable( allegro_demo allegro_demo.cc scene.cc shader_program.cc )
+add_executable( sdl_demo sdl_demo.cc scene.cc shader_program.cc )
+add_executable( sfml_demo sfml_demo.cc scene.cc shader_program.cc )
 
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)

@@ -1,5 +1,5 @@
 /*
- * scene.h Copyright 2024 Alwin Leerling dna.leerling@gmail.com
+ * shader_prgram.h Copyright 2025 Alwin Leerling dna.leerling@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,26 @@
 
 #pragma once
 
-#include "shader_program.h"
-class DemoScene
+#include <string>
+#include <vector>
+#include <filesystem>
+
+class ShaderProgram
 {
 public:
-	void make_scene();
-	void render_scene( int width, int height ) const;
+	ShaderProgram() = default;
+	~ShaderProgram();
+
+	void set_source( std::filesystem::path path );
+
+	void bind();
+	void unbind() const;
 
 private:
-	unsigned int vao;
-	ShaderProgram program;
+	unsigned int resource_id = -1;
+	std::vector<std::string> shaders;
+
+	std::vector<std::string> parse_source( std::istream& shader_stream );
+	unsigned int make_shader( unsigned int shader_type, std::string code );
+	unsigned int make_program( std::vector<unsigned int> shader_ids );
 };
