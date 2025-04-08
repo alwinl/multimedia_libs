@@ -36,7 +36,6 @@ public:
 
 private:
 	unsigned int resource_id = -1;
-	std::vector<std::string> shaders;
 
 	std::vector<std::string> parse_source( std::istream& shader_stream );
 	unsigned int make_shader( unsigned int shader_type, std::string code );

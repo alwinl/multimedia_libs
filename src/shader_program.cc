@@ -29,28 +29,32 @@
 
 ShaderProgram::~ShaderProgram()
 {
-	if( resource_id != -1 )
+	if( resource_id != -1 ) {
+		glUseProgram( 0 );
 		glDeleteProgram( resource_id );
+	}
 }
 
 void ShaderProgram::set_source(std::filesystem::path path)
 {
 	std::ifstream shader_stream( path );
 
-	shaders = parse_source( shader_stream );
+	std::vector<std::string> shaders = parse_source( shader_stream );
 
 	if( shaders.size() != 2 )
 		throw std::runtime_error( "Shader source file must contain both vertex and fragment shader" );
+
+	if( resource_id != -1 ) {
+		glUseProgram( 0 );
+		glDeleteProgram( resource_id );
+		resource_id = -1;
+	}
+
+	resource_id = make_program( { make_shader( GL_VERTEX_SHADER, shaders[0] ), make_shader( GL_FRAGMENT_SHADER, shaders[1] ) } );
 }
 
 void ShaderProgram::bind()
 {
-	if( resource_id == -1 ) {
-		if( shaders.empty() )
-			throw std::runtime_error( "Shader program not initialized" );
-
-		resource_id = make_program( { make_shader( GL_VERTEX_SHADER, shaders[0] ), make_shader( GL_FRAGMENT_SHADER, shaders[1] ) } );
-	}
 	if( resource_id == -1 )
 		throw std::runtime_error( "Shader program not initialized" );
 
