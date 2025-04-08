@@ -56,6 +56,8 @@ void DemoScene::make_scene()
 									 { { 0.0F, 1.0F, 0.0F }, { 0.0F, 1.0F, 0.0F } },
 									 { { 1.0F, -1.0F, 0.0F }, { 0.0F, 0.0F, 1.0F } } };
 
+	std::vector<unsigned int> indices = { 0, 1, 2 };
+
 	program.set_source( "../res/shaders/simple.glsl" );
 
 	unsigned int vertex_buffer = -1;
@@ -67,6 +69,12 @@ void DemoScene::make_scene()
 	glBindBuffer( GL_ARRAY_BUFFER, vertex_buffer );
 	glBufferData( GL_ARRAY_BUFFER, static_cast<int64_t>( vertices.size() * sizeof( vertex ) ), vertices.data(),
 				  GL_STATIC_DRAW );
+
+	unsigned int index_buffer = -1;
+
+	glGenBuffers( 1, &index_buffer );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, index_buffer );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, indices.data(), GL_STATIC_DRAW );
 
 	for( const auto &attribute : vertex_description ) {
 		glEnableVertexAttribArray( attribute.index );
@@ -91,5 +99,6 @@ void DemoScene::render_scene( int width, int height ) const
 
 	glBindVertexArray( vao );
 
-	glDrawArrays( GL_TRIANGLES, 0, 3 );
+	glDrawElements( GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL );
+	// glDrawArrays( GL_TRIANGLES, 0, 3 );
 }
