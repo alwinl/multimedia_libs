@@ -1,5 +1,5 @@
 /*
- * scene.h Copyright 2024 Alwin Leerling dna.leerling@gmail.com
+ * vertex_buffer.h Copyright 2025 Alwin Leerling dna.leerling@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,20 +19,16 @@
 
 #pragma once
 
-#include "shader_program.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-
-
-class DemoScene
+class VertexBuffer
 {
 public:
-	void make_scene();
-	void render_scene( int width, int height ) const;
+	VertexBuffer();
+	~VertexBuffer();
+
+	void bind();
+	void unbind() const;
+	void set_data( const void *data, unsigned int size );
 
 private:
-	unsigned int vao;
-	ShaderProgram program;
-	std::unique_ptr<VertexBuffer> vertex_buffer;
-	std::unique_ptr<IndexBuffer> index_buffer;
+	unsigned int resource_id = -1;
 };

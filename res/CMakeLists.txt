@@ -18,3 +18,5 @@
 #
 
 add_subdirectory(shaders)
+
+file(COPY triangle.obj DESTINATION ${CMAKE_BINARY_DIR}/res/triangle.obj)

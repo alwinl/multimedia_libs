@@ -21,7 +21,7 @@
 #include <vector>
 #include <array>
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <GL/glew.h>
 
 #include "scene.h"
@@ -52,10 +52,9 @@ DemoApp::DemoApp( int /*argc*/, char ** /*argv*/ )
 
 	SDL_Init( SDL_INIT_VIDEO );
 
-	SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "linear" );
+	// SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "linear" );
 
-	window = SDL_CreateWindow( "Hello from SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
-							   windowFlags );
+	window = SDL_CreateWindow( "Hello from SDL", width, height, windowFlags );
 
 	SDL_GL_CreateContext( window );
 
@@ -82,16 +81,18 @@ void DemoApp::run()
 
 		while( SDL_PollEvent( &event ) != 0 ) {
 			switch( event.type ) {
-			case SDL_QUIT: running = false; break;
-			case SDL_KEYDOWN:
-				if( event.key.keysym.sym == SDLK_ESCAPE )
+			case SDL_EVENT_QUIT:
+				running = false;
+				break;
+
+			case SDL_EVENT_KEY_DOWN:
+				if( event.key.key == SDLK_ESCAPE )
 					running = false;
 				break;
-			case SDL_WINDOWEVENT:
-				if( event.window.event == SDL_WINDOWEVENT_RESIZED ) {
-					width = event.window.data1;
-					height = event.window.data2;
-				}
+
+			case SDL_EVENT_WINDOW_RESIZED:
+				width = event.window.data1;
+				height = event.window.data2;
 				break;
 			}
 		}

@@ -58,23 +58,26 @@ void DemoScene::make_scene()
 
 	std::vector<unsigned int> indices = { 0, 1, 2 };
 
-	program.set_source( "../res/shaders/simple.glsl" );
-
-	unsigned int vertex_buffer = -1;
 
 	glGenVertexArrays( 1, &vao );
 	glBindVertexArray( vao );
 
-	glGenBuffers( 1, &vertex_buffer );
-	glBindBuffer( GL_ARRAY_BUFFER, vertex_buffer );
-	glBufferData( GL_ARRAY_BUFFER, static_cast<int64_t>( vertices.size() * sizeof( vertex ) ), vertices.data(),
-				  GL_STATIC_DRAW );
+	vertex_buffer = std::make_unique<VertexBuffer>();
+	vertex_buffer->set_data( vertices.data(), static_cast<unsigned int>( vertices.size() * sizeof( vertex ) ) );
 
-	unsigned int index_buffer = -1;
+	// unsigned int vertex_buffer = -1;
+	// glGenBuffers( 1, &vertex_buffer );
+	// glBindBuffer( GL_ARRAY_BUFFER, vertex_buffer );
+	// glBufferData( GL_ARRAY_BUFFER, static_cast<int64_t>( vertices.size() * sizeof( vertex ) ), vertices.data(),
+	// 			  GL_STATIC_DRAW );
 
-	glGenBuffers( 1, &index_buffer );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, index_buffer );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, indices.data(), GL_STATIC_DRAW );
+	index_buffer = std::make_unique<IndexBuffer>();
+	index_buffer->set_data( indices.data(), static_cast<unsigned int>( indices.size() ) );
+
+	// unsigned int index_buffer = -1;
+	// glGenBuffers( 1, &index_buffer );
+	// glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, index_buffer );
+	// glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, indices.data(), GL_STATIC_DRAW );
 
 	for( const auto &attribute : vertex_description ) {
 		glEnableVertexAttribArray( attribute.index );
@@ -85,6 +88,7 @@ void DemoScene::make_scene()
 							   reinterpret_cast<const void *>( attribute.offset ) );
 	}
 
+	program.set_source( "../res/shaders/simple.glsl" );
 	program.bind();
 
 	glBindVertexArray( 0 );
@@ -100,5 +104,4 @@ void DemoScene::render_scene( int width, int height ) const
 	glBindVertexArray( vao );
 
 	glDrawElements( GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL );
-	// glDrawArrays( GL_TRIANGLES, 0, 3 );
 }

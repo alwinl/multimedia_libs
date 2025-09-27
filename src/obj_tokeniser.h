@@ -1,5 +1,5 @@
 /*
- * scene.h Copyright 2024 Alwin Leerling dna.leerling@gmail.com
+ * obj_tokeniser.h Copyright 2025 Alwin Leerling dna.leerling@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,20 +19,19 @@
 
 #pragma once
 
-#include "shader_program.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
+#include <string>
+#include <istream>
+#include <filesystem>
 
-
-class DemoScene
+class ObjTokeniser
 {
 public:
-	void make_scene();
-	void render_scene( int width, int height ) const;
+	ObjTokeniser() = default;
+	~ObjTokeniser() = default;
 
-private:
-	unsigned int vao;
-	ShaderProgram program;
-	std::unique_ptr<VertexBuffer> vertex_buffer;
-	std::unique_ptr<IndexBuffer> index_buffer;
+	void set_source( std::istream& stream );
+	void set_source( std::filesystem::path path );
+
+	bool next_token();
+	std::string get_token() const;
 };

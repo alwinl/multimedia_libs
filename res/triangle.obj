@@ -1,0 +1,9 @@
+# Mesh of a triangle
+
+# The vertex definition is x y z r g b
+v -1.0 -1.0 0.0 1.0 0.0 0.0
+v  0.0  1.0 0.0 0.0 1.0 0.0
+v  1.0 -1.0 0.0 0.0 0.0 1.0
+
+# A triangle has one face
+f 1 2 3
