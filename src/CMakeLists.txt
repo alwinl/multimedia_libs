@@ -20,6 +20,7 @@
 add_executable( allegro_demo allegro_demo.cc scene.cc shader_program.cc vertex_buffer.cc index_buffer.cc )
 add_executable( sdl_demo sdl_demo.cc scene.cc shader_program.cc vertex_buffer.cc index_buffer.cc )
 add_executable( sfml_demo sfml_demo.cc scene.cc shader_program.cc vertex_buffer.cc index_buffer.cc )
+add_executable( raylib_demo raylib_demo.cc scene.cc shader_program.cc vertex_buffer.cc index_buffer.cc )
 
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
@@ -30,8 +31,9 @@ pkg_check_modules(SFML REQUIRED sfml-all)
 pkg_check_modules( GLEW REQUIRED glew)
 
 find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
-
+find_package( raylib )
 
 target_link_libraries(allegro_demo PRIVATE ${ALLEGRO_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
 target_link_libraries( sdl_demo PRIVATE SDL3::SDL3-shared ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
 target_link_libraries( sfml_demo PRIVATE ${SFML_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries( raylib_demo PRIVATE ${raylib_LIBRARIES} ${OPENGL_LIBRARIES} )
